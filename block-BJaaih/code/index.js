@@ -66,8 +66,8 @@ Make sure it does not the changes the original array.
 */
 
 Array.prototype.shuffle = function() {
-  this.sort(()=> 0.5 - Math.random ());
-  return this;
+  let final = this.sort(()=> 0.5 - Math.random ());
+  return final;
 }
 
 // Test to check the shuffle method (It will return different output every time you call)
@@ -110,14 +110,15 @@ array that will contain only element that is common in both the array.
 */
 
 Array.prototype.intersection = function (arr) {
-  let final = [];
-
-  for(let i = 0; i < this.length; i++) {
-    if(arr.includes(this[i])) {
-      final.push(this[i]);
+  
+  let final = this.reduce((prev, curr)=> {
+    
+    if(arr.includes(curr)) {
+      
+      prev.push(curr);
     }
-
-  }
+    return prev;
+  }, []).unique();
   return final;
 }
 
@@ -143,14 +144,7 @@ Array.prototype.chunk = function(length = 1) {
     final.push(spliceItem);
   }
 
-  let result = [];
-  for(let i = 0; i < final.length; i++) {
-    
-    if(final[i].length !== 0) {
-      result.push(final[i]);
-    }
-  }
-  
+  let result = final.filter((elm)=> elm.length);
   return result;
 }
 
