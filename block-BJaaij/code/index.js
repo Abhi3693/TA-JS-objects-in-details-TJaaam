@@ -1,20 +1,20 @@
 class Booklist {
-    constructor (arr,index){
-        this.allBooks = arr;
-        this.currentBookIndex = index;
+    constructor (){
+        this.books = [];
+        this.currentBookIndex = 0;
     }
 
-    add(arr) {
-        this.allBooks = this.allBooks.concat(arr);
+    add(books = []) {
+        this.books = this.books.concat(books);
     };
     getCurrentBook() {
-        return this.allBooks[this.currentBookIndex];
+        return this.books[this.currentBookIndex];
     };
     getNextBook() {
-        return this.allBooks[this.currentBookIndex + 1];
+        return this.books[this.currentBookIndex + 1];
     };
     getPrevBook() {
-        return this.allBooks[this.currentBookIndex - 1];
+        return this.books[this.currentBookIndex - 1];
     };
     changeCurrentBook(newIndex) {
         this.currentBookIndex = newIndex;
@@ -22,12 +22,12 @@ class Booklist {
 }
 
 class Book {
-    constructor(title,category,author,finishedDate){
+    constructor(title,category,author){
         this.title = title;
         this.category = category;
         this.author = author;
         this.isRead = false;
-        this.finishedDate = finishedDate;
+        this.finishedDate = null;
     }
     markBookAsRead() {
         this.isRead = true;
@@ -35,10 +35,12 @@ class Book {
     }
 }
 
-let first = new Book("Mistake","Fiction", "Abhi Mane", "1/1/2021");
-let second = new Book("5 point some one", "Non-Fiction", "Chetan Bhagat", "1/7/2015");
-let third = new Book("Love story","Fiction", "Smita Rao", "23/4/2026");
-let fourth = new Book("Life and experiment", "Suspension", "Stya murti", "26/3/2018");
-let fifth = new Book("Filter Copy","Triller", "Mahesh Kawade", "22/8/2019");
+let first = new Book("Mistake","Fiction", "Abhi Mane");
+let second = new Book("5 point some one", "Non-Fiction", "Chetan Bhagat");
+let third = new Book("Love story","Fiction", "Smita Rao",);
+let fourth = new Book("Life and experiment", "Suspension", "Stya murti",);
+let fifth = new Book("Filter Copy","Triller", "Mahesh Kawade",);
 
-let allMyBooks = new Booklist([first,second,third,fourth,fifth], 3);
+let library = new Booklist();
+
+library.add([first,second,third,fourth,fifth]);
