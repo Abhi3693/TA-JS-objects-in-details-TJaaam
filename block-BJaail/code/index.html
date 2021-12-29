@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book App</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5d86031b8f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="h1-holder">
+            <i class="fas fa-book-open"></i>
+            <h1>My<span>Book</span>List</h1>
+        </div>
+        <div class="input-holder">
+            <form action="">
+                <label for="title">Title</label>
+                <input id="title" type="text" name="title">
+                <label for="authorName">Author</label>
+                <input id="authorName" type="text" name="authorName">
+                <label for="ISBN">ISBN#</label>
+                <input id="ISBN" type="text" name="ISBN">
+                <button class="btn">Add Book</button>
+            </form>
+            <table class="top-table">
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN#</th>
+                    <th></th>
+                </tr>
+            </table>
+            <table class="booklist">
+                
+            </table>
+        </div>
+        <ul class="tally-holder">
+
+        </ul>
+    </div>
+    <script src="./index.js"></script> 
+</body>
+</html>

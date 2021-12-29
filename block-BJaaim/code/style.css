@@ -1,0 +1,88 @@
+.h1-holder {
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+  color: #093667;
+  font-size: 800;
+}
+
+.btn {
+  background-color: #04ac5e;
+  color: #fff;
+  border: 1px solid #013901;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  margin: 0 20px;
+  cursor: pointer;
+}
+
+.question-holder {
+  padding: 50px;
+}
+
+.quesion-page {
+  width: 70%;
+  margin: 0 auto;
+  box-shadow: 4px 4px 20px gray;
+  padding: 20px;
+  background-color: wheat;
+  border-radius: 10px;
+}
+
+.btn-holder {
+  display: flex;
+  justify-content: space-between;
+}
+
+body {
+  background-color: #c2eff7;
+}
+
+li {
+  list-style: none;
+  font-size: 22px;
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+.submitAnswer {
+  padding: 10px;
+  font-size: 18px;
+  width: 28%;
+}
+
+.next {
+  margin-left: 100px;
+}
+
+.prev {
+  margin-right: 100px;
+}
+
+.display-result {
+  color: red;
+  font-size: 20px;
+}
+
+.showResult {
+  display: none;
+}
+
+fieldset {
+  padding: 20px;
+}
+
+.options, div {
+  margin-bottom: 10px;
+}
+
+.submitBtn {
+  padding: 5px 20px;
+  border-radius: 10px;
+  background-color: indianred;
+  border: none;
+  color: lavenderblush;
+}/*# sourceMappingURL=style.css.map */
