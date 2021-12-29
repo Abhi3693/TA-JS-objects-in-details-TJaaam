@@ -1,140 +1,119 @@
 let questionHolder = document.querySelector(".question-holder");
-let addScore = document.querySelector(".add-score");
-let displayResult = document.querySelector(".display-result");
-
-let score = 0;
-let userAns;
+let prevBtn = document.querySelector(".prev");
+let nextBtn = document.querySelector(".next");
+let showResult = document.querySelector(".showResult");
+let totalQuestions = document.querySelector(".total-questions p");
 
 class Question{
-    constructor(title,options,ansIndex) {
+    constructor(title,options,correctAnswerIndex) {
         this.title = title;
         this.options = options;
-        this.correctAnswer = ansIndex;
+        this.correctAnswerIndex = correctAnswerIndex;
     }
 
-    isCorrectAnswer(val) {
-        return val === this.correctAnswer;
+    isCorrectAnswer(answer) {
+        return this.options[this.correctAnswerIndex] === answer;
     }
 
     getCorrectAnswer() {
-        return this.correctAnswer;
-    }
-
-    createUI() {
-
-        addScore.innerHTML = "";
-
-        let text = document.createElement("h2");
-        text.innerText = this.title;
-
-        let ul = document.createElement("ul");
-
-        let allOptions = [];
-
-        this.options.forEach((option)=> {
-            let li = document.createElement("li");
-            let opt = document.createElement("p");
-                opt.innerText = option;
-            li.append(opt);
-            allOptions.push(li);
-        })
-
-        ul.append(text,allOptions[0],allOptions[1],allOptions[2],allOptions[3]);
-
-        addScore.append(score);
-        return ul;
+        return this.options[this.correctAnswerIndex];
     }
 }
-
 
 class Quiz{
-    constructor(list = []) {
-        this.allQuestions = list;
+    constructor(questions = [], score = 0) {
+        this.questions = questions;
         this.activeIndex = 0;
-        this.score = 0;
+        this.score = score;
+    }
+    addQuestion(title, options, correctAnswerIndex){
+        let question = new Question(title, options, correctAnswerIndex);
+        this.questions.push(question);
+    }
+    previousQuestion(){
+        this.activeIndex = this.activeIndex - 1;
         this.createUI();
     }
-
-    prevQuestion() {
-        
+    nextQuestion(){
+        this.activeIndex = this.activeIndex + 1;
+        this.createUI();
+    }
+    handleButton() {
         if(this.activeIndex === 0) {
-            this.activeIndex = 0;
+            prevBtn.style.visibility = "hidden";
+        } else if (this.activeIndex === this.questions.length - 1){
+            nextBtn.style.visibility = "hidden";
+            showResult.style.display = "inline-block";
         } else {
-            this.activeIndex = Number(this.activeIndex - 1);
-        }
-        this.createUI()
-    }
-
-    nextQuestion() {
-        if(this.activeIndex === this.allQuestions.length - 1) {
-            this.activeIndex = 0 ;
-        } else{
-            this.activeIndex = this.activeIndex + 1;
-        }
-        this.createUI();
-    }
-
-    updateScore(currQus) {
-       
-        if(event.keyCode === 13 && event.target.value !== "") {
-
-            displayResult.innerHTML = "";
-            let value = Number(event.target.value);
-
-            if(this.isCorrectAnswer(value)) {
-                userAns = `Right Answer`;
-                score = Number(score) + 1;
-                displayResult.append(userAns);
-                this.createUI();
-            } else {
-                userAns = `Wrong Answer`;
-                displayResult.append(userAns);
-                this.createUI();
-            }
+            prevBtn.style.visibility = "visible";
+            nextBtn.style.visibility = "visible";
+            showResult.style.display = "none";
         }
     }
-
-    createUI() {
-
+    increamentScore() {
+        this.score = this.score + 1;
+    }
+    createUI(){
         questionHolder.innerHTML = "";
-        displayResult.innerHTML = "";
+        let activeQuestion = this.questions[this.activeIndex];
 
-        let index = this.activeIndex;
+            let form = document.createElement("form");
+            let fieldset = document.createElement("fieldset");
+            let legend = document.createElement("legend");
+            legend.innerText = activeQuestion.title;
+            let optionsElm = document.createElement("div");
 
-        let currentQuestion = this.allQuestions[index];
+            activeQuestion.options.forEach((option, index)=> {
+                let input = document.createElement("input");
+                input.type = "radio";
+                input.id = `option-${index}`;
+                input.value = option;
+                input.name = "options";
 
-        let ul = currentQuestion.createUI();
- 
-        let prevBtn = document.createElement("button");
-        prevBtn.innerText = "Prev";
-        prevBtn.classList.add("btn");        
-        prevBtn.classList.add("prev");  
-        
-        prevBtn.addEventListener("click", this.prevQuestion.bind(this));
+                let label = document.createElement("label");
+                label.for = index;
+                label.innerText = option;
+                let div = document.createElement("div");
 
-        let submitAnswer = document.createElement("input");
-        submitAnswer.classList.add("submitAnswer");
-        submitAnswer.placeholder = "Enter your Number of option";
+                input.addEventListener("input", (event)=> {
+                    if(activeQuestion.isCorrectAnswer(event.target.value)){
+                        this.increamentScore();
+                    }
+                })
 
-        submitAnswer.addEventListener("keyup", this.updateScore.bind(currentQuestion));
-
-        let nextBtn = document.createElement("button");
-        nextBtn.innerText = "Next";
-        nextBtn.classList.add("btn");
-        nextBtn.classList.add("next");
-        
-        nextBtn.addEventListener("click", this.nextQuestion.bind(this));
-
-        ul.append(prevBtn,submitAnswer,nextBtn);
-
-        questionHolder.append(ul);
+                div.append(input, label);
+                optionsElm.append(div);
+            })
+            fieldset.append(legend,optionsElm);
+            form.append(fieldset);
+            
+            this.handleButton();
+            questionHolder.append(form);
     }
 }
 
-let first = new Question("What is capital of India?",["Mumbai","Kolkata","Delhi","Chennai"],2);
-let second = new Question("Ksndbv jksdn kjadsnc name?",["Xksdn","Lskjdb","Zsdn","Fakjsd"],1);
-let third = new Question("Asah kajs jasdh uwe?",["Gksdjbc","Bjacsn","Cajsh","Sasjdn"],3);
-let forth = new Question("Wkasjd kjasd porei kalsd?",["Nsjbd","Qjkdn","Rkjcn","Haksn"],0);
-let fifth = new Question("Pkasj weiouy kajsn?",["Tasjkcbd","Yakjsb","Unajbs","Iwueh"],1);
 
-const quiz = new Quiz([first, second,third,forth,fifth]);
+function init() {
+    let quiz = new Quiz();
+
+    let quizCollection = [{title:"What is capital of India?", options:["Mumbai","Kolkata","Delhi","Chennai"],correctAnswerIndex: 2},
+    {title:"Which is the largest Ocian?", options:["Indian", "Pacific", "Atlantic", "Artic"],correctAnswerIndex: 1},
+    {title:"Where is the Kohinoor Diamond?", options:["New Delhi", "New York", "Amstradum", "London"],correctAnswerIndex: 3},
+    {title:"Which is the pink city", options:["Shrinagar", "Pune", "Jaipur", "Banguluru"],correctAnswerIndex: 2},
+    {title:"Who is Prime Minister of India", options:["N. Modi", "A. Shaha", "R. Singh", "N. Gadkari"],correctAnswerIndex: 0},
+    ];
+
+
+    quizCollection.forEach((question)=> {
+        quiz.addQuestion(question.title, question.options, question.correctAnswerIndex);
+    })
+    quiz.createUI();
+    prevBtn.addEventListener("click", quiz.previousQuestion.bind(quiz));
+    nextBtn.addEventListener("click", quiz.nextQuestion.bind(quiz));
+
+    showResult.addEventListener("click", ()=>{
+        alert(`Your Score is ${quiz.score}`);
+    });
+}
+
+init();
